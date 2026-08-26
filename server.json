@@ -1,0 +1,17 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-09-29/server.schema.json",
+  "name": "io.github.johnsmalls22-rgb/domain-search-king-mcp",
+  "description": "Domain search MCP: .com names verified available live via Verisign RDAP - not AI guess lists",
+  "repository": {
+    "url": "https://github.com/johnsmalls22-rgb/domain-search-king-mcp",
+    "source": "github"
+  },
+  "version": "1.0.0",
+  "websiteUrl": "https://domainsearchking.com/mcp",
+  "remotes": [
+    {
+      "type": "streamable-http",
+      "url": "https://domainsearchking.com/api/mcp"
+    }
+  ]
+}
