@@ -1,5 +1,7 @@
 # Domain Search King — MCP Server for Available Domain Name Search
 
+[![johnsmalls22-rgb/domain-search-king-mcp MCP server](https://glama.ai/mcp/servers/johnsmalls22-rgb/domain-search-king-mcp/badges/score.svg)](https://glama.ai/mcp/servers/johnsmalls22-rgb/domain-search-king-mcp)
+
 **Find domain names that are actually available to register — verified live against the Verisign RDAP registry, not AI guesses.**
 
 Remote MCP (Model Context Protocol) server for Claude, Claude Code, Cursor, VS Code, Windsurf, and any MCP-compatible AI agent. Ask your AI for business name ideas and get back **only .com domains that are available right now**.
