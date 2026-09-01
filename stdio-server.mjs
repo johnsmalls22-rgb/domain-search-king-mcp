@@ -184,13 +184,16 @@ function parseRpcBody(text) {
 
 function writeMessage(obj) {
   if (!obj) return;
-  const json = JSON.stringify(obj);
-  const payload = Buffer.from(json, "utf8");
-  process.stdout.write(`Content-Length: ${payload.length}\r\n\r\n`);
-  process.stdout.write(payload);
+  // mcp-proxy (Glama) speaks newline-delimited JSON, not LSP Content-Length.
+  process.stdout.write(JSON.stringify(obj) + "\n");
+}
+
+if (process.stdout._handle && typeof process.stdout._handle.setBlocking === "function") {
+  process.stdout._handle.setBlocking(true);
 }
 
 let buf = Buffer.alloc(0);
+let draining = false;
 process.stdin.on("data", (chunk) => {
   buf = Buffer.concat([buf, chunk]);
   drain().catch((err) => {
@@ -201,30 +204,26 @@ process.stdin.on("end", () => process.exit(0));
 process.stdin.resume();
 
 async function drain() {
-  while (true) {
-    const msg = takeMessage();
-    if (!msg) return;
-    const reply = await handleMessage(msg);
-    writeMessage(reply);
+  if (draining) return;
+  draining = true;
+  try {
+    while (true) {
+      const msg = takeMessage();
+      if (!msg) return;
+      const reply = await handleMessage(msg);
+      writeMessage(reply);
+    }
+  } finally {
+    draining = false;
+    if (buf.indexOf("\n") !== -1) {
+      drain().catch((err) => {
+        process.stderr.write(String(err.stack || err) + "\n");
+      });
+    }
   }
 }
 
 function takeMessage() {
-  const headerEnd = buf.indexOf("\r\n\r\n");
-  if (headerEnd !== -1) {
-    const header = buf.slice(0, headerEnd).toString("utf8");
-    const m = header.match(/Content-Length:\s*(\d+)/i);
-    if (!m) {
-      buf = buf.slice(headerEnd + 4);
-      return null;
-    }
-    const len = Number(m[1]);
-    const start = headerEnd + 4;
-    if (buf.length < start + len) return null;
-    const json = buf.slice(start, start + len).toString("utf8");
-    buf = buf.slice(start + len);
-    return JSON.parse(json);
-  }
   const nl = buf.indexOf("\n");
   if (nl === -1) return null;
   const line = buf.slice(0, nl).toString("utf8").replace(/\r$/, "").trim();

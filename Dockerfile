@@ -2,8 +2,8 @@
 # introspect tools. The product itself is the hosted remote endpoint:
 # https://domainsearchking.com/api/mcp (no install, no API key).
 #
-# Glama only needs initialize + tools/list to score quality; tools/call is
-# forwarded to the live remote server when the container has network.
+# Glama ignores this file and wraps: mcp-proxy -- node stdio-server.mjs
+# stdout MUST be newline-delimited JSON (no LSP Content-Length headers).
 
 FROM node:22-slim
 WORKDIR /app
