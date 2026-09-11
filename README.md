@@ -11,7 +11,7 @@ Remote MCP (Model Context Protocol) server for Claude, Claude Code, Cursor, VS C
 
 ## Why this exists: AI models hallucinate domain availability
 
-LLMs confidently suggest domain names that were registered decades ago. Our [AI Domain Hallucination Index](https://domainsearchking.com/ai-hallucination-index) found **~89% of AI-suggested domains are already taken**.
+LLMs confidently suggest domain names that were registered decades ago. Our [AI Domain Hallucination Index](https://domainsearchking.com/ai-hallucination-index) found **up to 92% of AI-suggested domains are already taken**.
 
 Real examples — names AI models routinely call "available":
 
